@@ -120,6 +120,9 @@ function autocomplete(inp, arr) {
 globalThis.consultarCiudades = (inp, cities = ciudades) => {
   autocomplete(inp, cities)
 }
+
+autocomplete(document.getElementById("ciudadR-flexii"), ciudades);
+autocomplete(document.getElementById("ciudadD-flexii"), ciudades);
 autocomplete(document.getElementById("ciudadR"), ciudades);
 autocomplete(document.getElementById("ciudadD"), ciudades);
 autocomplete(document.getElementById("actualizar_ciudad"), ciudades);

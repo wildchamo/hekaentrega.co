@@ -153,7 +153,7 @@ exports.plantearSolucion = async (req, res) => {
     let batch = db.batch();
     batch.update(doc.ref, { seguimiento: firebase.firestore.FieldValue.arrayUnion(gest) });
 
-    const referenciaNotificacion = db.collection("notificaciones").doc();
+    const referenciaNotificacion = db.collection("notificaciones").doc(guia.id_heka);
 
     const notificacion = estructuraBaseNotificacion({
       mensaje: `Solución externa para la guía: ${numeroGuia}`,

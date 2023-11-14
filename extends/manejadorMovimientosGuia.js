@@ -1,6 +1,46 @@
 const firebase = require("../keys/firebase");
 const db = firebase.firestore();
 
+/**
+ * TRANSPORTADORA: {
+ *  entregada: Representa el estado por transportadora para indicar que una guía fue entregada,
+ *  devuelta: Representa el estado por transportadora para indicar que una guía fue devuelta,
+ *  anulada: Representa los estados que proporciona la transportadora para indicar que una guía fue anulada
+ * }
+ */
+const estadosTransportadora = {
+    SERVIENTREGA: {
+        entregada: ["ENTREGADO"],
+        devuelta: ["ENTREGADO A REMITENTE"],
+        anulada: []
+    },
+    INTERRAPIDISIMO: {
+        entregada: ["Entrega Exitosa", "Entregada"],
+        devuelta: ["Devuelto al Remitente"],
+        anulada: ["Documento Anulado"]
+    },
+    ENVIA: {
+        entregada: ["ENTREGADA DIGITALIZADA"],
+        devuelta: ["DEVOLUCION"],
+        anulada: []
+    },
+    COORDINADORA: {
+        entregada: ["ENTREGADA"],
+        devuelta: ["CERRADO POR INCIDENCIA, VER CAUSA"],
+        anulada: []
+    }
+}
+
+const estadosGenerales = Object.values(estadosTransportadora);
+
+const capturarEstadosEntregada = estadosGenerales.map(v => v.entregada);
+const capturarEstadosDevoluciones = estadosGenerales.map(v => v.devuelta);
+const capturarEstadosAnuladas = estadosGenerales.map(v => v.anulada);
+
+const estadosFinalizacionPorTransportadora = t => {
+    return Object.values(estadosTransportadora[t]).flat();
+}
+
 /*
     COORDINADORA
 
@@ -23,33 +63,20 @@ const db = firebase.firestore();
         ENTREGADO
         ENTREGADO A REMITENTE
 */
-const estadosEntregado = [
-    "ENTREGADA", // COORDINADORA
-    "ENTREGADA DIGITALIZADA", //ENVIA
-    "Entrega Exitosa", "Entregada", // INTERRAPIDISIMO
-    "ENTREGADO" // SERVIENTREGA
-];
+const estadosEntregado = capturarEstadosEntregada.flat();
+const estadosDevolucion = capturarEstadosDevoluciones.flat();
 
-const estadosDevolucion = [
-    "CERRADO POR INCIDENCIA, VER CAUSA", // COORDINADORA
-    "DEVOLUCION", //ENVIA
-    "Devuelto al Remitente", // INTERRAPIDISIMO
-    "ENTREGADO A REMITENTE" // SERVIENTREGA
-];
-
-const estadosAnuladas = [
-    "Documento Anulado" // INTERRAPIDÍSIMO
-]
+const estadosAnuladas = capturarEstadosAnuladas.flat();
 
 exports.estadosGuia = {
-    novedad: "NOVEDAD",
-    pedido: "PEDIDO",
-    pagada: "PAGADA",
-    finalizada: "FINALIZADA",
-    generada: "GENERADA",
-    proceso: "TRANSITO",
-    empacada: "EMPACADA",
-    eliminada: "ELIMINADA"
+    novedad: "NOVEDAD", // Cuando la guía presenta una novedad por la transportadora
+    pedido: "PEDIDO", // cuando la guía es generada por nosotros sin la transportadora ( sucede con la tienda, por ejemplo)
+    pagada: "PAGADA", // Cuando la guía ha sido pagada por Heka entrega ( Viene luego de finalizada ) ULTIMO ESTADO
+    finalizada: "FINALIZADA", // Cuando la transportadora ha entregado la guía correctamente al destinatario
+    generada: "GENERADA", // Cuando la guía es generada con la transportadora correctamente
+    proceso: "TRANSITO", // Cuando, aceptada por la transportadora, la guía ya presenta estados
+    empacada: "EMPACADA", // El flujo alterno para mantener el orden en el proceso de creación, es un estado intermedio en el que el usuario concerta de que efectivamente va a enviar la guía ( viene antes de transito y despues de generada)
+    eliminada: "ELIMINADA" // cuando el usuario ha decidido eliminar la guía (flujo alterno de pedido o en proceso)
 }
 
 /**

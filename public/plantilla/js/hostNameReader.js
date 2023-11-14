@@ -40,6 +40,8 @@ const brands = [hekaBrand, flexxiBrand, localBrand];
 hostnameReader();
 function hostnameReader() {
   const hostname = window.location.host;
+  const redirectFlexii = $("#redirectFlexii")
+  const redirectHeka = $("#redirectHeka")
   const pageTitle = $("#pageTitle");
   const indexLink = $(".indexLink");
   const element = $(".copyrightWord");
@@ -52,6 +54,9 @@ function hostnameReader() {
 
   // Una vez que se tengan los cambios, se toma en cuenta los valores de la marca obtenida
   if(brand == localBrand) cambiarTema();
+  // if(brand == localBrand) redirectHeka.addClass("d-none");
+  if(brand == hekaBrand) redirectFlexii.addClass("d-none");
+  if(brand == flexxiBrand) redirectHeka.addClass("d-none");
   pageTitle.text(brand.nombre_completo);
   indexLink.attr("href", brand.index);
   element.text(brand.nombre_completo);

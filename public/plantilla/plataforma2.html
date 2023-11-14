@@ -119,10 +119,15 @@
             <i class="fas fa-fw fa-home"></i>
             <span>Inicio</span></a>
         </li>
-        <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Acá podras cotizar tus envios">
+        <li class="nav-item" id="redirectHeka" data-toggle="tooltip" data-placement="right" title="Acá podras cotizar tus envios">
           <a class="nav-link" href="#cotizar_envio">
             <i class="fas fa-fw fa-balance-scale"></i>
             <span>Cotizar envío</span></a>
+        </li>
+        <li class="nav-item" id="redirectFlexii" data-toggle="tooltip" data-placement="right" title="Acá podras cotizar tus envios">
+          <a class="nav-link" href="#cotizar_envio-flexii">
+            <i class="fas fa-fw fa-balance-scale"></i>
+            <span>Flexii</span></a>
         </li>
         <li class="nav-item d-none" data-toggle="tooltip" data-placement="right" title="Acá podras acceder a tu propia tienda. (Espacio aun no finalizado)">
           <a class="nav-link" href="#tienda">
@@ -197,8 +202,8 @@
       <!-- Content Wrapper -->
       <div id="content-wrapper" class="d-flex flex-column">
         <div class="row">
-          <div  class="text-center bg-dark text-white col-sm">Area logística <a class="text-white correo-atencion" href="mailto:atencion@hekaentrega.co"></a></div>
-          <div  class="text-center bg-dark text-white col-sm">Area comercial <a class="text-white cel-atencion" href="https://wa.link/jwryoa">312 463 8608</a></div>
+          <div  class="text-center bg-dark text-white col-sm">Area logística <a class="text-white correo-atencion"></a></div>
+          <div  class="text-center bg-dark text-white col-sm">Area comercial <a class="text-white cel-atencion" ></a></div>
           <div class="text-center text-white bg-info col-sm">Saldo: <span class="text-white mostrar-saldo" id="saldo"></span></div>
         </div>
         <!-- Topbar -->
@@ -551,7 +556,7 @@
             <!-- Page Heading -->
             <div style="display: block;" id="cotizador">
               <h1 class="h3 mb-4 text-gray-800">Cotizar envío</h1>
-              <div class="card d-none cotizador-beta" id="opciones-cotizador">
+              <div class="card cotizador-beta" id="opciones-cotizador">
                 <div class="card-body">
                   <span class="badge badge-danger badge-counter float-right" style="font-size: medium;" data-toggle="tooltip" title='Esta es una implementación de prueba, dependiendo de la interacción con los usuarios puede o no eliminarse.'>Beta</span>
                   <div class="row">
@@ -597,8 +602,8 @@
                   </div>
   
                   <div class="d-flex justify-content-end">
-                    <button id="boton_cotizar_2"  onclick="cotizador()" 
-                    class="btn btn-primary btn-sm mx-2">Cotizar envío</button>
+                    <button id="boton_cotizar_2"
+                    class="btn btn-primary btn-sm mx-2 cotizador-button cotizador-2">Cotizar envío</button>
                     
                   </div>
 
@@ -686,14 +691,165 @@
               </div> -->
 
               </form>
-              <button id="boton_cotizar"  onclick="cotizador()" 
-              class="btn btn-primary btn-block btn-lg mb-3">
+              <button id="boton_cotizar"
+              class="btn btn-primary btn-block btn-lg mb-3 cotizador-button">
                 Cotizar envío
               </button>
   
               <!-- End of Main Content -->
             </div> <!-- End of Main Content -->
             <div id="result_cotizacion" class="mt-5"></div>
+          </div>
+          <!-- COTIZADOR FLEXII -->
+
+          <div class="container-fluid " id="cotizar_envio-flexii" style="display: none;">
+            
+            <!-- Page Heading -->
+            <div style="display: block;" id="cotizador-flexii">
+              <h1 class="h3 mb-4 text-gray-800">Cotizar envío</h1>
+              <div class="card cotizador-beta-flexii" id="opciones-cotizador">
+                <div class="card-body">
+                  <span class="badge badge-danger badge-counter float-right" style="font-size: medium;" data-toggle="tooltip" title='Esta es una implementación de prueba, dependiendo de la interacción con los usuarios puede o no eliminarse.'>Beta</span>
+                  <div class="row">
+                    
+                    <div class="form-group col-md">
+                      <label for="list_bodegas-cotizador">
+                        Bodegas
+                        <i class="fa fa-question-circle" data-toggle="tooltip" title='Se listan las bodegas guardadas para una selección más específica.'></i> 
+                      </label>
+                      <select type="text" class="form-control"
+                      id="list_bodegas-cotizador-flexii"></select>
+                    </div>
+  
+                    <div class="form-group col-md">
+                      <label for="list_plantillas-cotizador_flexii">
+                        Plantillas
+                        <i class="fa fa-question-circle" data-toggle="tooltip" title='Se listan las plantillas guardadas previamente.'></i>
+                      </label>
+                      <i id="boton_eliminar_plant" title="Eliminar plantilla" data-toggle="tooltip"
+                      class="fa fa-trash mx-2 text-danger d-none"></i>
+                      <select type="text" class="form-control"
+                      id="list_plantillas-cotizador-flexii"></select>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-6 text-center d-none" id="cont_act_plant-cotizador-flexii">
+                      <input type="checkbox" id="actv_editar_plantilla-cotizador-flexii">
+                      <label for="actv_editar_plantilla-cotizador">
+                        Cambiar datos de la <b>plantilla</b>
+                        <i class="fa fa-question-circle" data-toggle="tooltip" title='Si marcas la opción, se editará la información guardada previamente al presionar el botón "Cotizar envío"'></i> 
+                      </label>
+                    </div>
+
+                    <div class="col text-center">
+                      <input type="checkbox" id="actv_ciudad_plantilla-cotizador-flexii">
+                      <label for="actv_ciudad_plantilla-cotizador-flexii">
+                        Tomar ciudad de plantilla guardada
+                        <i class="fa fa-question-circle" data-toggle="tooltip" title='Las plantillas guardan también la ciudad desde la que se envió la primera vez, si la marcas, heredas la misma ciudad en caso de que tanto el producto como el destino coincidan.'></i> 
+                      </label>
+                    </div>
+  
+                  </div>
+  
+                  <div class="d-flex justify-content-end">
+                    <button id="boton_cotizar_2-flexii"  onclick="cotizadorFlexii()" 
+                    class="btn btn-primary btn-sm mx-2">Cotizar envío</button>
+                    
+                  </div>
+
+                </div>
+                
+              </div>
+              
+              <hr class="sidebar-divider"></hr>
+
+
+              <form class="user" name="cotizacionEnvio" id="cotizar-envio-flexii">
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-2">
+                    <h6>CIUDAD REMITENTE</h6>
+                    <h6>**Escribir ciudad y luego elegir del menú desplegable**</h6>
+                    <input   name="ciudadR" type="text" class="form-control form-control-user" id="ciudadR-flexii"  autocomplete="off" required>
+                  </div>
+
+                  <div class="col-sm-6 mb-2">
+                    <h6>CIUDAD DESTINO</h6>
+                    <h6>**Escribir ciudad y luego elegir del menú desplegable**</h6>
+                    <input type="text"  name="ciudadD" class="form-control form-control-user" id="ciudadD-flexii" autocomplete="off"  required>
+                  </div>
+                </div>
+
+                <div class="form-group row align-items-end mb-3">
+                  <div class="col-sm-6 mb-3 mb-sm-3">
+                    <h6>KILOS <small class="popover-peso"></small></h6>
+                    <input type="number" class="form-control form-control-user only-integers" step="any" name="kilos" id="Kilos-flexii" min="1" max="25" required>  
+                  </div>      
+                  <div class="col mb-3 mb-sm-3">
+                    <h6>Valor Declarado <small class="popover-declarado"></small></h6>
+                    <input type="number" onchange="this.classList.add('is-invalid')"
+                    class="form-control form-control-user only-integers" id="seguro-mercancia-flexii" value="15000" step="1000" name="recaudo" min="5000" max="2000000" >
+                    <div class="invalid-feedback">
+                      Incrementar el valor asegurado también incrementará el costo del envío.
+                    </div>
+                  </div>      
+                </div>
+
+                <div class="form-group row align-items-end">
+                  <div class="col">
+                    <h6 class="mb-2 text-center">Dimensiones <span>(Expresadas en Centímetros)</span> <small class="popover-dimensiones"></small></h6>
+                    <div class="row">
+                      <div class="col-sm-4 d-flex align-items-center mb-2">
+                        <label for="dimension-ancho">Ancho:  </label>
+                        <input type="number" class="form-control form-control-user ml-2 only-integers" id="dimension-ancho-flexii" name="ancho" min="1" max="150" >
+                      </div>
+                      <div class="col-sm-4 d-flex align-items-center mb-2">
+                        <label for="dimension-largo">Largo:  </label>
+                        <input type="number" class="form-control form-control-user ml-2 only-integers" id="dimension-largo-flexii" name="largo" min="1" max="150" >
+                      </div>
+                      <div class="col-sm-4 d-flex align-items-center mb-2">
+                        <label for="dimension-alto">Alto:  </label>
+                        <input type="number" class="form-control form-control-user ml-2 only-integers" id="dimension-alto-flexii" name="alto" min="1" max="150" >
+                      </div>
+                    </div>
+                  </div>
+               
+                </div>
+                
+                <div class="form-group row align-items-end cotizador-beta-flexii d-none" id="cont_config_save-cotizador-flexii">
+                  <div class="col-12 text-center mt-3">
+                    <input type="checkbox" id="guardar_cotizacion-cotizador">
+                    <label for="guardar_cotizacion-cotizador">
+                      Crear <b>Plantilla</b> con los datos del cotizador 
+                      <i class="fa fa-question-circle" data-toggle="tooltip" title='Esta opción te permitirá guardar una plantilla con los datos ingresados previamente para que no tengas que digitarlo nuevamente en el futuro.'></i>   
+                    </label>
+                  </div>
+
+                  <div class="col-12 mb-3 mb-sm-3 d-none" id="cont_nom_plant-cotizador-flexii">
+                    <label class="form-label" for="nombre">
+                      Nombre plantilla 
+                      <i class="fa fa-question-circle" data-toggle="tooltip" title='Ingrese nombre único de la plantilla que le permita encontrarla más rápido en un futuro.'></i>     
+                    </label>
+                    <input type="text" class="form-control" name="nombre" id="nombre_cotizador">  
+                  </div>
+                </div>
+
+
+                <!-- para activar o desactivar las guias automáticas -->
+              <!-- <div class="custom-control custom-switch text-center m-2">
+                <input type="checkbox" class="custom-control-input" id="switch-guias_automaticas">
+                <label class="custom-control-label" for="switch-guias_automaticas">Sistema automatizado para generar guías desactivado.</label>
+              </div> -->
+
+              </form>
+              <button id="boton_cotizar-flexii"  onclick="cotizadorFlexii()" 
+              class="btn btn-primary btn-block btn-lg mb-3">
+                Cotizar envío
+              </button>
+  
+              <!-- End of Main Content -->
+            </div> <!-- End of Main Content -->
+            <div id="result_cotizacion-flexii" class="mt-5"></div>
           </div>
 
           <div class="container-fluid flex justify-content-center align-items-center" id="flexii-guia" style="display: none;">
@@ -1555,7 +1711,7 @@
           
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; <a Area logística="copyrightWord"></a></span>
+              <span>Copyright &copy; <a class="copyrightWord"></a></span>
             </div>
           </div>
         </footer>

@@ -55,10 +55,9 @@ exports.estructuraBaseNotificacion = (options) => {
         id_heka: "id_heka"
     }
 
-    let fecha = estandarizarFecha(null, "DD/MM/YYY - HH:MM", true);
+    let fecha = estandarizarFecha(null, "DD/MM/YYYY - HH:MM", true);
     
     let notificacion = {
-        visible_office: true,
         fecha,
         timeline: new Date().getTime(),
         mensaje: ""

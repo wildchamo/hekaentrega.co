@@ -15,6 +15,9 @@ const { UsuarioPrueba, Credenciales } = require("../keys/serviCredentials");
 const {
   revisarNovedadAsync,
   estadosGuia,
+  modificarEstadoGuia,
+  detectaNovedadEnElHistorialDeEstados,
+  atributosAdicionalesEnActualizacion,
 } = require("../extends/manejadorMovimientosGuia");
 const { templateMessage } = require("./messageBird");
 const { notificarNovedadEncontrada } = require("../extends/notificaciones");
@@ -622,7 +625,7 @@ async function actualizarMovimientos(doc) {
               //#endregion
 
               /*Respuesta ante la actualización de movimientos.
-            se actulizan aquellos estados que sean diferentes y que estén registrados en este objeto*/
+              se actulizan aquellos estados que sean diferentes y que estén registrados en este objeto*/
               upte_movs = await extsFunc.actualizarMovimientos(doc, data_to_fb);
             } else {
               upte_movs = {
@@ -633,36 +636,34 @@ async function actualizarMovimientos(doc) {
 
             let finalizar_seguimiento = doc.data().prueba ? true : false;
             /*Respuesta a la actualización de los estados,
-          ésta me actualiza el estado actual que manifiesta la guía, si el seguimiento
-          fue finalizado, y la fecha de actualización*/
-            const movimiento_culminado = ["ENTREGADO", "ENTREGADO A REMITENTE"];
-            const seguimiento_finalizado =
-              movimiento_culminado.some((v) => v === data.EstAct[0]) ||
-              finalizar_seguimiento;
+            ésta me actualiza el estado actual que manifiesta la guía, si el seguimiento
+            fue finalizado, y la fecha de actualización*/
+            
+            guia.estadoTransportadora = data.EstAct[0];
+            
+            // Función encargada de actualizar el estado, como va el seguimiento, entre cosas base importantes
+            const actualizaciones = modificarEstadoGuia(guia);
 
-            const actualizaciones = {
-              estado: data.EstAct[0],
-              ultima_actualizacion: new Date(),
-              seguimiento_finalizado: seguimiento_finalizado,
-            };
+            actualizaciones.enNovedad = detectaNovedadEnElHistorialDeEstados(upte_movs);
 
-            if (seguimiento_finalizado)
-              actualizaciones.estadoActual = estadosGuia.finalizada;
-
-            if (upte_movs.estado === "Mov.A" && upte_movs.guardado) {
-              const { enNovedad } = upte_movs.guardado;
-              actualizaciones.enNovedad = enNovedad || false;
-            }
-
+            // Esto me llena un arreglo de todas las novedades que han sido notificadas, para consultarlo y evitar duplicar notificaciones
             actualizaciones.novedadesNotificadas =
               await notificarNovedadEncontrada(guia, movimientos);
 
-            if (fecha_ult_novedad)
-              actualizaciones.fecha_ult_novedad = fecha_ult_novedad;
-            if (ultima_novedad) actualizaciones.ultima_novedad = ultima_novedad;
-            if (entrega_oficina_notificada)
-              actualizaciones.entrega_oficina_notificada =
-                entrega_oficina_notificada;
+            // Esto pasa una serie de argumentos, que detecta que haya alguna información para actualizar
+            // en caso de que los valores del segundo parametros sean falsos, undefined o null, no los toma en cuenta para actualizar
+            atributosAdicionalesEnActualizacion(actualizaciones, {
+              fecha_ult_novedad, ultima_novedad, entrega_oficina_notificada, 
+              seguimiento_finalizado: finalizar_seguimiento
+            });
+
+            console.log(actualizaciones);
+
+            // return [{
+            //   estado: "Est.N.A", //Estado no actualizado
+            //   guia: doc.id + " / " + doc.data().numeroGuia,
+            // }];
+            
             let upte_estado = await extsFunc.actualizarEstado(
               doc,
               actualizaciones

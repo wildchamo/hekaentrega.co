@@ -1,3 +1,4 @@
+// $("#xx").empty();
 let datos_de_cotizacion,
   oficinas = [],
   bodega,
@@ -294,16 +295,16 @@ async function cotizador() {
       );
       verificador("seguro-mercancia", true);
     } else if (
-      value("dimension-ancho") <
+      datos_de_cotizacion.ancho <
         transportadoras[codTransp].limitesLongitud[0] ||
-      value("dimension-largo") <
+        datos_de_cotizacion.largo <
         transportadoras[codTransp].limitesLongitud[0] ||
-      value("dimension-alto") < transportadoras[codTransp].limitesLongitud[0] ||
-      value("dimension-ancho") >
+        datos_de_cotizacion.alto < transportadoras[codTransp].limitesLongitud[0] ||
+        datos_de_cotizacion.ancho >
         transportadoras[codTransp].limitesLongitud[1] ||
-      value("dimension-largo") >
+        datos_de_cotizacion.largo >
         transportadoras[codTransp].limitesLongitud[1] ||
-      value("dimension-alto") > transportadoras[codTransp].limitesLongitud[1]
+        datos_de_cotizacion.alto > transportadoras[codTransp].limitesLongitud[1]
     ) {
       // Si el valor de las dimensiones exceden el limite permitido
       alert(
@@ -586,7 +587,6 @@ async function response(datos) {
     );
     datos_a_enviar.debe = false;
   }
-
   //Lleno algunos campos de los datos de cotizacióm
   datos_de_cotizacion.peso = result_cotizacion.kg;
   datos_de_cotizacion.costo_envio = result_cotizacion.costoEnvio;
@@ -597,7 +597,7 @@ async function response(datos) {
   datos_de_cotizacion.type = type;
 
   const notas = agregarNotasDeExepcionAlCotizador();
-
+  console.log(datos_de_cotizacion)
   // let htmlTransportadoras = await detallesTransportadoras(datos_de_cotizacion);
 
   //Creo un html con los detalles de la consulta y las transportadoras involucradas
@@ -3019,37 +3019,42 @@ class CalcularCostoDeEnvio {
   async cotizarInter(dane_ciudadR, dane_ciudadD) {
     console.log("cotizando Interrapidisimo");
     let ciudadBloqueada = false
-    let url =
-      "https://www3.interrapidisimo.com/ApiServInter/api/Cotizadorcliente/ResultadoListaCotizar/";
-    let ciudadesPorBloquear = ["20013000","19022000","27025000","05034000","05040000","54051000","73055000","27050000","27073000","27075000","52079000","13074000","13001004","27615023","25086000","27099000","05107000","54109000","76109000","05129000","25288001","05147000","97161000","27160000","85015000","27205000","13212000","81220000","52224000","15223000","52233000","19532000","50245000","27135000","27245000","52250000","13248000","20250000","47258000","47268000","70233000","19256000","54250000","19290000","52520000","20295000","52320000","19318000","70265000","54344000","13300000","52354000","27361000","27372000","20383000","47980003","50370001","95025001","99524000","52390000","86573000","52405000","52411000","27413000","19418000","08421000","68425000","25426000","52427000","44430000","70429000","08433000","08436000","20443000","27425000","27430000","27450000","97001000","23500000","13458000","52473000","73461000","54480000","05495000","13490000","27491000","85225000","27495000","68498000","05501000","73504000","52506000","19517000","25518000","05543000","13549000","47555000","52540000","08560000","88564000","91540000","81591000","13580000","52786019","08606000","27580000","27600000","52621000","19622000","47660000","47675000","05642000","68669000","70678000","13655000","50686000","13667000","70713000","05667000","19693000","47703000","52696000","19701000","99624000","54680000","47980008","19743000","68745000","70771000","27787000","13780000","20787000","97666000","19809000","52835000","15839000","27810000","50370000","44847000","76890000","47960000"]
+    // let url = "https://www3.interrapidisimo.com/ApiServInter/api/Cotizadorcliente/ResultadoListaCotizar/";
+    let url = "https://www3.interrapidisimo.com/ApiServInter/api/CotizadorCliente/ResultadoListaCotizarValidaContrapago/";
+    
+    /*let ciudadesPorBloquear = ["20013000","19022000","27025000","05034000","05040000","54051000","73055000","27050000","27073000","27075000","52079000","13074000","13001004","27615023","25086000","27099000","05107000","54109000","76109000","05129000","25288001","05147000","97161000","27160000","85015000","27205000","13212000","81220000","52224000","15223000","52233000","19532000","50245000","27135000","27245000","52250000","13248000","20250000","47258000","47268000","70233000","19256000","54250000","19290000","52520000","20295000","52320000","19318000","70265000","54344000","13300000","52354000","27361000","27372000","20383000","47980003","50370001","95025001","99524000","52390000","86573000","52405000","52411000","27413000","19418000","08421000","68425000","25426000","52427000","44430000","70429000","08433000","08436000","20443000","27425000","27430000","27450000","97001000","23500000","13458000","52473000","73461000","54480000","05495000","13490000","27491000","85225000","27495000","68498000","05501000","73504000","52506000","19517000","25518000","05543000","13549000","47555000","52540000","08560000","88564000","91540000","81591000","13580000","52786019","08606000","27580000","27600000","52621000","19622000","47660000","47675000","05642000","68669000","70678000","13655000","50686000","13667000","70713000","05667000","19693000","47703000","52696000","19701000","99624000","54680000","47980008","19743000","68745000","70771000","27787000","13780000","20787000","97666000","19809000","52835000","15839000","27810000","50370000","44847000","76890000","47960000"]
     ciudadesPorBloquear.forEach((ciudad) => {
       if(ciudad == dane_ciudadD){
         ciudadBloqueada = true
       }
-    });
+    });*/
 
 
-    if (ciudadBloqueada && (this.type === "PAGO CONTRAENTREGA" || this.type == "PAGO DESTINO"))return 0;
+    if (ciudadBloqueada && (this.type === "PAGO CONTRAENTREGA" || this.type == "PAGO DESTINO")) return 0;
 
+    const pagoContraentrega = this.convencional ? "FALSE" : "TRUE";
     let res = await fetch(
       url +
-        7986 +
-        "/" +
-        dane_ciudadR +
-        "/" +
-        dane_ciudadD +
-        "/" +
-        this.kgTomado +
-        "/" +
-        this.seguro +
-        "/1/" +
-        genFecha("LR")
+      7986 +
+      "/" +
+      dane_ciudadR +
+      "/" +
+      dane_ciudadD +
+      "/" +
+      this.kgTomado +
+      "/" +
+      this.seguro +
+      "/1/" +
+      genFecha("LR")
+      + "/" + pagoContraentrega
     )
-      .then((data) => data.json())
-      .catch((err) => err);
+    .then((data) => {
+      return data.json()
+    })
+    .catch((err) => err);
 
-    if (res.message || res.Message) return 0;
     console.log(res);
+    if (res.message || res.Message) return 0;
     let mensajeria = res.filter((d) => {
       let Convencional = false;
       let Contraentrega = false;

@@ -5,7 +5,7 @@ const xml2js = require("xml2js");
 const {DOMParser} = require("xmldom");
 const { transformarDatosDestinatario, segmentarString, estandarizarFecha, actualizarMovimientos, actualizarEstado } = require("../extends/funciones");
 
-const { estadosGuia, guiaEnNovedad } = require("../extends/manejadorMovimientosGuia");
+const { estadosGuia, guiaEnNovedad, detectaNovedadEnElHistorialDeEstados, modificarEstadoGuia } = require("../extends/manejadorMovimientosGuia");
 
 
 function normalizarValoresNumericos(valores) {
@@ -321,7 +321,6 @@ exports.actualizarMovimientos = async (docs) => {
 }
 
 async function actualizarMovimientoIndividual(doc, respuesta) {
-    const estados_finalizacion = ["ENTREGADA", "CERRADO POR INCIDENCIA, VER CAUSA"];
     
     try {
         const guia = doc.data();
@@ -343,7 +342,6 @@ async function actualizarMovimientoIndividual(doc, respuesta) {
     
         console.log("BREAK", estados, novedades, movimientos);
         const ultimo_estado = movimientos[movimientos.length - 1];
-        let finalizar_seguimiento = doc.data().prueba ? true : false
     
         const estadoActual = respuesta.descripcion_estado;
     
@@ -367,19 +365,17 @@ async function actualizarMovimientoIndividual(doc, respuesta) {
             updte_movs = await actualizarMovimientos(doc, estado);
         }
     
-        let enNovedad = !!novedades.length && guiaEnNovedad(movimientos, "COORDINADORA");
+        let novedad = !!novedades.length && guiaEnNovedad(movimientos, "COORDINADORA");
     
-        const seguimiento_finalizado = estados_finalizacion.some(v => estadoActual === v)
-        || finalizar_seguimiento;
         
-        const actualizaciones = {
-            estado: estadoActual,
-            ultima_actualizacion: new Date(),
-            enNovedad,
-            seguimiento_finalizado,
-        }
-    
-        if(seguimiento_finalizado) actualizaciones.estadoActual = estadosGuia.finalizada;
+        guia.estadoTransportadora = estadoActual;
+            
+        // Función encargada de actualizar el estado, como va el seguimiento, entre cosas base importantes
+        const actualizaciones = modificarEstadoGuia(guia);
+
+        actualizaciones.enNovedad = novedad ? novedad.enNovedad : false;
+
+        console.log("Actualización generada => ", actualizaciones);
     
         const updte_estados = await actualizarEstado(doc, actualizaciones);
     

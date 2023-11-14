@@ -319,3 +319,8 @@ export const segmentarArreglo = (arr, rango) => {
 
     return res;
 }
+
+export function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+}
+  

@@ -1,6 +1,6 @@
 const path = require("path");
 
-const dominiosFlexii = ["flexii.co", "www.flexi.co"];
+const dominiosFlexii = ["flexii.co", "www.flexi.co", "localhost:6200"];
 const obtenerLogo = name => path.join(__dirname, "..", "public", "plantilla", "img", name);
 const logoNeutral = (req, res) => {
     let logo = "logo-heka.png";

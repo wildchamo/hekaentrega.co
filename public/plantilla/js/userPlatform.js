@@ -1,16 +1,14 @@
 import inicio from "./homeView/main.js";
 import agregarBodega from "./bodegas/bodegas.js";
 import "./historialGuias/main.js";
-import { iniciarOpcionesCotizador, llenarBodegasCotizador, llenarProductos } from "./cotizador/index.js";
+import { iniciarOpcionesCotizador } from "./cotizador/index.js";
 import { registroDesdePunto } from "./auth/register.js";
 import { agregarObjetoDeEnvio } from "./auth/handlers.js";
 
 // if(estado_prueba) {
 // }
-// #region Funciones para habilitar configuraciones de las plantillas para el cotizador
+// #region Funciones para habilitar configuraciones báses del cotizador
 iniciarOpcionesCotizador();
-llenarBodegasCotizador();
-llenarProductos();
 // #endregion
 
 inicio();

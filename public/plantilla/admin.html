@@ -259,10 +259,10 @@
 
 
             <div class="row">
-              <form class="input-group mb-3 col-12 offset-md-2 col-md-8">
+              <form class="input-group mb-3 col-12 offset-md-2 col-md-8" onsubmit="buscarUsuarios(event)">
                 <input type="text" class="form-control border-info" placeholder="Busca usuario por nombre, correo, dirección, número de documento o celular" id="buscador_usuarios-nombre">
                 <div class="input-group-append">
-                  <input type="button" class="btn btn-small btn-outline-info" value="buscar" onclick="buscarUsuarios()">
+                  <input type="submit" class="btn btn-small btn-outline-info" value="buscar">
                 </div>
               </form>
             </div>
@@ -1007,201 +1007,201 @@
 
 
          
-<div id="oficina-seleccionada" class="d-none ">
-  <div class="card-header text-center">
-    <div class="row">
-      <a class="btn btn-outline-primary btn-lg" href="javascript:volver()">Volver</a>
-      <script>
-      function volver(){
-          document.getElementById("mostrador-oficinas").classList.remove("d-none");
-          document.getElementById("busqueda-oficinas").classList.remove("d-none");
-          document.getElementById("descargar-informe-oficinas").classList.remove("d-none");
-          document.getElementById("oficina-seleccionada").classList.add("d-none");
-     
-        }
-      </script>
-    </div>
-    <h3 id="nombre-oficina">Nombre Oficina</h3>
+            <div id="oficina-seleccionada" class="d-none ">
+              <div class="card-header text-center">
+                <div class="row">
+                  <a class="btn btn-outline-primary btn-lg" href="javascript:volver()">Volver</a>
+                  <script>
+                    function volver(){
+                      document.getElementById("mostrador-oficinas").classList.remove("d-none");
+                      document.getElementById("busqueda-oficinas").classList.remove("d-none");
+                      document.getElementById("descargar-informe-oficinas").classList.remove("d-none");
+                      document.getElementById("oficina-seleccionada").classList.add("d-none");
+                
+                    }
+                  </script>
+                </div>
+                <h3 id="nombre-oficina">Nombre Oficina</h3>
 
-  </div>
+              </div>
 
-    <!-- Información oficina -->
-  <div class="card shadow mb-4">
-    <!-- Card Header - Accordion -->
-    <a href="#informacion-oficina" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="informacion-personal">
-      <h6 class="m-0 font-weight-bold text-primary">Información Oficina</h6>
-    </a>
-    <!-- Card Content - Collapse -->
-  <div class="collapse show" id="informacion-oficina">
-<div class="card-body">
+              <!-- Información oficina -->
+              <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a href="#informacion-oficina" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="informacion-personal">
+                  <h6 class="m-0 font-weight-bold text-primary">Información Oficina</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+              <div class="collapse show" id="informacion-oficina">
+            <div class="card-body">
 
-  <form action="">
-  
-    <div class="form-group row">
-      <div class="col-sm-6 mb-3 mb-sm-0">
-        <h6>Nombres*</h6>
-        <input required type="text" class="form-control form-control-user"
-        name="nombres" id="nombres-oficina">
-      </div>
-      <div class="col-sm-6">
-        <h6>Apellidos*</h6>
-        <input required type="text" class="form-control form-control-user"
-        name="apellidos" id="apellidos-oficina">
-      </div> 
-    </div>
+              <form action="">
+              
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <h6>Nombres*</h6>
+                    <input required type="text" class="form-control form-control-user"
+                    name="nombres" id="nombres-oficina">
+                  </div>
+                  <div class="col-sm-6">
+                    <h6>Apellidos*</h6>
+                    <input required type="text" class="form-control form-control-user"
+                    name="apellidos" id="apellidos-oficina">
+                  </div> 
+                </div>
 
-    <div class="form-group row">
-      <div class="col-sm-6 mb-3 mb-sm-0">
-        <h6>Tipo documento*</6>
-        <h6></h6>
-        
-        <select  class="form-control form-control"
-        name="tipo_documento" id="tipo-documento-oficina" readonly>
-          <option value="CC" selected>CC</option> 
-        </select>
-      </div>
-      <div class="col-sm-6">
-        <h6>Número identificación*</h6>
-        <input type="number" class="form-control form-control-user"
-        name="numero_documento" id="no-documento-oficina" readonly>
-      </div>
-      
-    </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <h6>Tipo documento*</6>
+                    <h6></h6>
+                    
+                    <select  class="form-control form-control"
+                    name="tipo_documento" id="tipo-documento-oficina" readonly>
+                      <option value="CC" selected>CC</option> 
+                    </select>
+                  </div>
+                  <div class="col-sm-6">
+                    <h6>Número identificación*</h6>
+                    <input type="number" class="form-control form-control-user"
+                    name="numero_documento" id="no-documento-oficina" readonly>
+                  </div>
+                  
+                </div>
 
-    <div class="form-group row">
-      <div class="col-sm-6 mb-3 mb-sm-0">
-        <h6>Celular*</h6>
-        <input required type="number" class="form-control form-control-user"
-        name="celular" id="numero1">
-      </div>
-      <div class="col-sm-6">
-        <h6>Celular #2</h6>
-        <input type="number" class="form-control form-control-user"
-        name="celular2" id="numero2">
-      </div>
-    </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <h6>Celular*</h6>
+                    <input required type="number" class="form-control form-control-user"
+                    name="celular" id="numero1">
+                  </div>
+                  <div class="col-sm-6">
+                    <h6>Celular #2</h6>
+                    <input type="number" class="form-control form-control-user"
+                    name="celular2" id="numero2">
+                  </div>
+                </div>
 
-    <div class="form-group row">
-      <div class="col-sm-6 mb-3 mb-sm-0">
-        <h6>Correo*</h6>
-        <input required type="mail" class="form-control form-control-user"
-         id="correo-oficina">
-      </div>
-      <div class="col-sm-6">
-        <h6>Nombre empresa*</h6>
-        <input required type="text" class="form-control form-control-user"
-        name="celular2" id="nombre-empresa-oficina">
-      </div>
-    </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <h6>Correo*</h6>
+                    <input required type="mail" class="form-control form-control-user"
+                    id="correo-oficina">
+                  </div>
+                  <div class="col-sm-6">
+                    <h6>Nombre empresa*</h6>
+                    <input required type="text" class="form-control form-control-user"
+                    name="celular2" id="nombre-empresa-oficina">
+                  </div>
+                </div>
 
-    <div class="form-group row">
-      <div class="col-sm-6 mb-3 mb-sm-0">
-        <h6>Ciudad*</h6>
-        <input required type="text" class="form-control form-control-user"
-         id="ciudad-oficina">
-      </div>
-      <div class="col-sm-6">
-        <h6>Dirección*</h6>
-        <input required type="text" class="form-control form-control-user"
-         id="dirección-oficina">
-      </div>
-    </div>
+                <div class="form-group row">
+                  <div class="col-sm-6 mb-3 mb-sm-0">
+                    <h6>Ciudad*</h6>
+                    <input required type="text" class="form-control form-control-user"
+                    id="ciudad-oficina">
+                  </div>
+                  <div class="col-sm-6">
+                    <h6>Dirección*</h6>
+                    <input required type="text" class="form-control form-control-user"
+                    id="dirección-oficina">
+                  </div>
+                </div>
 
-    <div class="form-group row">
-      <div class="col-sm-4 mb-3 mb-sm-0">
-        <h6>Barrio*</h6>
-        <input required type="text" class="form-control form-control-user"
-         id="barrio-oficina">
-      </div>
-      <div class="col-sm-4">
-        <h6>Con*</h6>
-        <input required type="text" class="form-control form-control-user"
-         id="con-oficina">
-      </div>
-      
-      <div class="col-sm-4">
-        <h6>Visible</h6>
-        <select  class="form-control form-control"
-        id="visible-oficina">
-        <!-- <option value="true" >Si</option>  -->
-        <option value=true >Si</option> 
-        <option value=false >No</option> 
-      </select>
-    </div>
-  </div>
-    <input type="button" class="btn btn-outline-primary btn-lg btn-block mt-4 no-updte"
-    onclick="actualizarInformacionOficina()" value="Actualizar Datos Oficina">
-  </form>
-  </div>
-
-
-
-  
-</div>
+                <div class="form-group row">
+                  <div class="col-sm-4 mb-3 mb-sm-0">
+                    <h6>Barrio*</h6>
+                    <input required type="text" class="form-control form-control-user"
+                    id="barrio-oficina">
+                  </div>
+                  <div class="col-sm-4">
+                    <h6>Con*</h6>
+                    <input required type="text" class="form-control form-control-user"
+                    id="con-oficina">
+                  </div>
+                  
+                  <div class="col-sm-4">
+                    <h6>Visible</h6>
+                    <select  class="form-control form-control"
+                    id="visible-oficina">
+                    <!-- <option value="true" >Si</option>  -->
+                    <option value=true >Si</option> 
+                    <option value=false >No</option> 
+                  </select>
+                </div>
+              </div>
+                <input type="button" class="btn btn-outline-primary btn-lg btn-block mt-4 no-updte"
+                onclick="actualizarInformacionOficina()" value="Actualizar Datos Oficina">
+              </form>
+              </div>
 
 
 
-  </div>
+              
+            </div>
 
-  <!-- Informacion Heka-->
-<div class="card shadow mb-4">
-  <!-- Card Header - Accordion -->
-  <a
-    href="#informacion-hekaOfi"
-    class="d-block card-header py-3"
-    data-toggle="collapse"
-    role="button"
-    aria-expanded="true"
-    aria-controls="informacion-heka"
-  >
-    <h6 class="m-0 font-weight-bold text-primary">Información Heka</h6>
-  </a>
-  <!-- Card Content - Collapse -->
-  <div class="collapse" id="informacion-hekaOfi">
-    <div class="card-body">
-      <form class="user">
-        <h4 class="text-center">distribución</h4>
-        <div class="form-group row">
-          <div class="col-sm-4 mb-4">
-            <h6>Porcentaje comisión</h6>
-            <input
-              type="number"
-              class="form-control form-control-user"
-              max="100"
-              id="porcentaje-comision-oficina"
-            />
-          </div>
-          <div class="col-sm-4">
-            <h6>Tipo de distribución</h6>
 
-            <label><input type="checkbox" id="tipo-distribucion-direccion" value=0>Entrega en dirección </label>
-            <br>
-            <label><input type="checkbox" id="tipo-distribucion-oficina" value=0>Entrega en oficina </label>
-          </div>
-          
-          <div class="col-sm-4">
-            <h6>Comisión minima</h6>
-            <input
-              type="number"
-              class="form-control form-control-user"
-              id="comision-minima"
-            />
-          </div>
-        </div>
 
-        <input
-          type="button"
-          class="btn btn-outline-primary btn-lg btn-block mt-4 no-updte"
-          onclick="actualizarInformacionHekaOficina()"
-          value="Actualizar info heka"
-        />
-      </form>
-    </div>
-  </div>
-</div>
+              </div>
 
-  
-</div>
+              <!-- Informacion Heka-->
+              <div class="card shadow mb-4">
+                <!-- Card Header - Accordion -->
+                <a
+                  href="#informacion-hekaOfi"
+                  class="d-block card-header py-3"
+                  data-toggle="collapse"
+                  role="button"
+                  aria-expanded="true"
+                  aria-controls="informacion-heka"
+                >
+                  <h6 class="m-0 font-weight-bold text-primary">Información Heka</h6>
+                </a>
+                <!-- Card Content - Collapse -->
+                <div class="collapse" id="informacion-hekaOfi">
+                  <div class="card-body">
+                    <form class="user">
+                      <h4 class="text-center">distribución</h4>
+                      <div class="form-group row">
+                        <div class="col-sm-4 mb-4">
+                          <h6>Porcentaje comisión</h6>
+                          <input
+                            type="number"
+                            class="form-control form-control-user"
+                            max="100"
+                            id="porcentaje-comision-oficina"
+                          />
+                        </div>
+                        <div class="col-sm-4">
+                          <h6>Tipo de distribución</h6>
+
+                          <label><input type="checkbox" id="tipo-distribucion-direccion" value=0>Entrega en dirección </label>
+                          <br>
+                          <label><input type="checkbox" id="tipo-distribucion-oficina" value=0>Entrega en oficina </label>
+                        </div>
+                        
+                        <div class="col-sm-4">
+                          <h6>Comisión minima</h6>
+                          <input
+                            type="number"
+                            class="form-control form-control-user"
+                            id="comision-minima"
+                          />
+                        </div>
+                      </div>
+
+                      <input
+                        type="button"
+                        class="btn btn-outline-primary btn-lg btn-block mt-4 no-updte"
+                        onclick="actualizarInformacionHekaOficina()"
+                        value="Actualizar info heka"
+                      />
+                    </form>
+                  </div>
+                </div>
+              </div>
+
+              
+            </div>
 
 
 
@@ -2035,6 +2035,88 @@
                 <div id="visor-centro_notificaciones" class="row">
                   <!-- MOSTADOR DE NOTIFICACIONES ACTIVAS -->
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="container-fluid" id="ciudades">
+            <form class="row bg-white border rounded p-3" id="form-ciudades">
+              <div class="form-group col-12 mb-3">
+                <label for="buscador-ciudades">Buscar Ciudad</label>
+                <input type="text" list="list_buscador-ciudades" class="form-control" id="buscador-ciudades">
+                <datalist id="list_buscador-ciudades"></datalist>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="dane_ciudad-ciudades">Dane Ciudad</label>
+                <input type="text" class="form-control" id="dane_ciudad-ciudades" name="dane_ciudad" required>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="ciudad-ciudades">Ciudad</label>
+                <input type="text" class="form-control" id="ciudad-ciudades" name="ciudad" required>
+              </div>
+              
+              <div class="form-group col-md-4">
+                <label for="departamento-ciudades">Departamento</label>
+                <input type="text" class="form-control" id="departamento-ciudades" name="departamento" required>
+              </div>
+              
+              <div class="form-group col-12">
+                <label for="nombre-ciudades">nombre</label>
+                <input type="text" class="form-control" id="nombre-ciudades" name="nombre">
+              </div>
+
+              <div class="form-group col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="transportadorasEntregan" value="SERVIENTREGA" id="transp1-ciudades">
+                  <label class="form-check-label" for="transp1-ciudades">
+                    SERVIENTREGA 
+                  </label>
+                  <i class="fa fa-cog text-primary ml-2 detalles-transp-ciudades"></i>
+                </div>
+              </div>
+
+              <div class="form-group col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="transportadorasEntregan" value="INTERRAPIDISIMO" id="transp2-ciudades">
+                  <label class="form-check-label" for="transp2-ciudades">
+                    INTERRAPIDISIMO
+                  </label>
+                  <i class="fa fa-cog text-primary ml-2"></i>
+                </div>
+              </div>
+
+              <div class="form-group col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="transportadorasEntregan" value="ENVIA" id="transp3-ciudades">
+                  <label class="form-check-label" for="transp3-ciudades">
+                    ENVIA
+                  </label>
+                  <i class="fa fa-cog text-primary ml-2"></i>
+                </div>
+              </div>
+
+              <div class="form-group col-md-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="transportadorasEntregan" value="COORDINADORA" id="transp4-ciudades">
+                  <label class="form-check-label" for="transp4-ciudades">
+                    COORDINADORA
+                  </label>
+                  <i class="fa fa-cog text-primary ml-2"></i>
+                </div>
+              </div>
+
+              <button class="btn btn-primary" type="submit">Actualizar</button>
+            </form>
+
+            <div class="card shadow my-3">
+              <!-- Card Header - Accordion -->
+              <a href="#estadisticas-ciudades" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true">
+                <h6 class="m-0 font-weight-bold text-primary">Estadísticas</h6>
+              </a>
+              <!-- Card Content - Collapse -->
+              <div class="collapse row p-3" id="estadisticas-ciudades">
               </div>
             </div>
           </div>
