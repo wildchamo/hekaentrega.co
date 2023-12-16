@@ -5,6 +5,8 @@ const interRouter = require("../controllers/inter");
 
 router.get("/consultarGuia", interRouter.consultarGuia);
 
+router.post("/cotizar", interRouter.cotizar);
+
 router.post("/crearGuia", interRouter.crearGuia);
 
 router.get("/crearStickerGuia/:id", interRouter.crearStickerGuia);

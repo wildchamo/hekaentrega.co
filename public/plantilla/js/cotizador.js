@@ -3033,6 +3033,34 @@ class CalcularCostoDeEnvio {
       return 0;
 
     const pagoContraentrega = this.convencional ? "FALSE" : "TRUE";
+
+    
+    //#region SOLICITUD PASADA AL BACK
+    const data = {
+      dane_ciudadR,
+      dane_ciudadD,
+      peso: this.kgTomado,
+      seguro: this.seguro,
+      pagoContraentrega
+    }
+    /* Request de solicitud al back
+    let resBack = await fetch(
+      "/inter/cotizar",
+      {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "Application/json"
+        }
+      }
+    )
+    .then((data) => {
+      return data.json()
+    })
+    .catch((err) => err);
+    */
+    //#endregion
+
     let res = await fetch(
       url +
         7986 +

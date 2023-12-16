@@ -9,15 +9,25 @@ exports.cotizar = async (req, res) => {
     const {type} = req.params;
     const body = req.body;
     console.log("CREDENCIALES => ", credentials);
+    const esPagoContraentrega = body.type === "PAGO CONTRAENTREGA";
+
+    // si es de pago a destino, el código de cuenta pasa a ser 7
+    const cod_formaPago = body.type === "PAGO DESTINO" ? 7 : 4;
+
+    // Si la guía es de pago contraentrega, se efectúa un código diferente al que comparten "PAGO DESTINO" y "CONVENCIONAL"
+    const cod_cuenta = esPagoContraentrega ? credentials.cod_cuenta_rec : credentials.cod_cuenta;
+    
+    // El valor de producto pasa a ser cero cuando la guía no es de pago contraentrega
+    const valorProducto = esPagoContraentrega ? body.valor : 0;
 
     const data = {
         "ciudad_origen": body.ciudad_origen,
         "ciudad_destino": body.ciudad_destino,
-        "cod_formapago": 4, // crédito = 4, contraentrega = 7
+        "cod_formapago": cod_formaPago, // crédito = 4, contraentrega = 7
         "cod_servicio": body.peso >= 9 ? 3 : 12, // 3 (mercacía terrestre) si supera los 9 kilos, 12 (paquete terrestre) si el peso 1-8kg
         "cod_regional_cta": 1,
         "cod_oficina_cta": 1,
-        "cod_cuenta": type === "CONVENCIONAL" ? credentials.cod_cuenta : credentials.cod_cuenta_rec,
+        "cod_cuenta": cod_cuenta,
         "info_cubicacion": [
             {
                 "cantidad": 1,
@@ -32,7 +42,7 @@ exports.cotizar = async (req, res) => {
         "con_cartaporte": "0",
         "info_contenido": {
             // "num_documentos": "12345-67890",
-            "valorproducto": type === "CONVENCIONAL" ? 0 : body.valorproducto // si aplica pago contraentrega, aquí va
+            "valorproducto": valorProducto
         }
     }
 
@@ -62,11 +72,20 @@ exports.cotizar = async (req, res) => {
 exports.crearGuia = async (req, res) => {
     const guia = req.body;
     console.log(guia);
+    const esPagoContraentrega = guia.type === "PAGO CONTRAENTREGA";
+
+    // si es de pago a destino, el código de cuenta pasa a ser 7
+    const cod_formaPago = guia.type === "PAGO DESTINO" ? 7 : 4;
+
+    // Si la guía es de pago contraentrega, se efectúa un código diferente al que comparten "PAGO DESTINO" y "CONVENCIONAL"
+    const cod_cuenta = esPagoContraentrega ? credentials.cod_cuenta_rec : credentials.cod_cuenta;
     
+    // El valor de producto pasa a ser cero cuando la guía no es de pago contraentrega
+    const valorProducto = esPagoContraentrega ? guia.valor : 0;
     const data = {
         "ciudad_origen": guia.dane_ciudadR,
         "ciudad_destino": guia.dane_ciudadD,
-        "cod_formapago": 4, // Crédito
+        "cod_formapago": cod_formaPago, // 4: Crédito,6:Contado,7:Contraentrega
         "cod_servicio": guia.peso >= 9 ? 3 : 12,
         "info_cubicacion": [{
             "cantidad": 1,
@@ -80,7 +99,7 @@ exports.crearGuia = async (req, res) => {
         "mca_docinternacional": 0, //Para exterior
         "cod_regional_cta": 1, 
         "cod_oficina_cta": 1,
-        "cod_cuenta": guia.type === "CONVENCIONAL" ? credentials.cod_cuenta : credentials.cod_cuenta_rec,
+        "cod_cuenta": cod_cuenta,
         "con_cartaporte": 0,
         "info_origen": {
             "nom_remitente": guia.nombreR,
@@ -100,7 +119,7 @@ exports.crearGuia = async (req, res) => {
             "accion_notaguia": "",
             "num_documentos": "12345-67890",
             "centrocosto": "",
-            valorproducto: guia.type === "CONVENCIONAL" ? 0 : guia.valor
+            valorproducto: valorProducto
         },
         "numero_guia": "",
         "generar_os": guia.recoleccion_esporadica ? "S" : "N" // Para solicitar recolección S/N => Si/No

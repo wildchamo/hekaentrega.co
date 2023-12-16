@@ -4473,6 +4473,7 @@ async function historialGuiasAdmin(e) {
       visible: false
     },
     { data: "direccionD", title: "Dirección", defaultContent: "---", visible: false },
+    { data: "dice_contener", title: "Contenido", defaultContent: "---", visible: false },
     {
       data: "id_tipo_entrega",
       title: "Tipo de entrega",

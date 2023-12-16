@@ -278,6 +278,35 @@ function getCredentials(cuenta_responsable, prueba) {
 }
 
 // FUNCIONES A EXPORTAR 
+exports.cotizar = async (req, res) => {
+    const {dane_ciudadD, dane_ciudadR, peso, seguro, pagoContraentrega} = req.body;
+    const fecha = extsFunc.estandarizarFecha(new Date(), "DD-MM-YYYY");
+
+    const urlRequest = CredencialesEmpresa.endpointcotizar
+        + CredencialesEmpresa.idCliente 
+        + "/" 
+        + dane_ciudadR 
+        + "/" 
+        + dane_ciudadD 
+        + "/" 
+        + peso 
+        + "/" 
+        + seguro 
+        + "/1/" 
+        + fecha
+        + "/" + pagoContraentrega;
+
+    console.log(urlRequest);
+
+    let cotizacion = await fetch(urlRequest)
+    .then(d => d.json())
+    .catch(err => err);
+
+    console.log(cotizacion);
+
+    res.json(cotizacion);
+}
+
 exports.crearGuia = (req, res) => {
     const guia = req.body;
     const credentials = getCredentials(guia.cuenta_responsable, guia.prueba);
