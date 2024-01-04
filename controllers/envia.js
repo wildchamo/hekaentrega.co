@@ -9,16 +9,16 @@ exports.cotizar = async (req, res) => {
     const {type} = req.params;
     const body = req.body;
     console.log("CREDENCIALES => ", credentials);
-    const esPagoContraentrega = body.type === "PAGO CONTRAENTREGA";
+    const esPagoContraentrega = type === "PAGO CONTRAENTREGA";
 
     // si es de pago a destino, el código de cuenta pasa a ser 7
-    const cod_formaPago = body.type === "PAGO DESTINO" ? 7 : 4;
+    const cod_formaPago = type === "PAGO DESTINO" ? 7 : 4;
 
     // Si la guía es de pago contraentrega, se efectúa un código diferente al que comparten "PAGO DESTINO" y "CONVENCIONAL"
     const cod_cuenta = esPagoContraentrega ? credentials.cod_cuenta_rec : credentials.cod_cuenta;
     
     // El valor de producto pasa a ser cero cuando la guía no es de pago contraentrega
-    const valorProducto = esPagoContraentrega ? body.valor : 0;
+    const valorProducto = esPagoContraentrega ? body.valorproducto : 0;
 
     const data = {
         "ciudad_origen": body.ciudad_origen,
